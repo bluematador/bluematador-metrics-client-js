@@ -4,28 +4,50 @@ const StatsD = require('hot-shots'), client = new StatsD({
     
 })
 
-
-const sendGauge = (gauge, amount, tags) => {
-  if(sanitizeData([gauge, amount, tags])) {
-    client.gauge(gauge, amount, tags);
-  } else {
-    console.log('Illegal character')
+const sendGauge = (gauge, amount, tags, callback) => {
+  try {
+    if(sanitizeData(gauge, amount, tags)) {
+      client.gauge(gauge, amount, tags);
+    } 
+  } catch(err) {
+    callback(err)
   }
-  
-} 
+}
 
+const sanitizeData = (gauge, amount, tags) => {
+  checkName(gauge)
+  checkValue(amount)
+  checkTags(tags)
+  return true
+}
 
-const sanitizeData = data => {
-  let clean = true
-  data.forEach(string => {
-  if(string.includes("#")){
-    clean = false
-  }
-  if(string.includes("|")) {
-    clean = false
-  }
+const checkTags = tags => {
+  tags.forEach(tag => {
+    if(tag.includes("#")) {
+      throw `Illegal character # in tag ${tag}`
+    }
+    if(tag.includes("|")) {
+      throw `Illegal character | in tag ${tag}`
+    }
   })
-  return clean
+  return true
+}
+
+const checkName = name => {
+  if(name.includes("#")) {
+    throw `Illegal character # in metric name ${name}`
+  }
+  if(name.includes("|")) {
+    throw `Illegal character | in metric name ${name}`
+  }
+  return true
+}
+
+const checkValue = number => {
+  if(typeof number != 'number') {
+    throw 'Metric value is not a number'
+  } 
+  return true
 }
 
 
