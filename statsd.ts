@@ -7,8 +7,20 @@ const StatsD = require('hot-shots'), client = new StatsD({
 const sendGauge = (gauge, amount, tags, callback) => {
   try {
     if(sanitizeData(gauge, amount, tags)) {
+      console.log(tags)
       client.gauge(gauge, amount, tags);
     } 
+  } catch(err) {
+    callback(err)
+  }
+}
+
+const incrementCounter = (counter, tags, callback) => {
+  try {
+    if(sanitizeData(counter, 0, tags)) {
+      console.log(tags)
+      client.increment(counter, tags)
+    }
   } catch(err) {
     callback(err)
   }
@@ -22,6 +34,7 @@ const sanitizeData = (gauge, amount, tags) => {
 }
 
 const checkTags = tags => {
+  console.log(tags)
   tags.forEach(tag => {
     if(tag.includes("#")) {
       throw `Illegal character # in tag ${tag}`
@@ -107,5 +120,6 @@ client.close(function(err) {
 
 
   module.exports = {
-    sendGauge
+    sendGauge,
+    incrementCounter
   }
