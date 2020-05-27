@@ -1,0 +1,23 @@
+{
+  "parser": "babel-eslint",
+  "extends": "airbnb",
+  "env": {
+    "mocha": true
+  },
+  "rules": {
+    "comma-dangle": ["error", "only-multiline"],
+    "semi": "warn",
+    "indent": "warn",
+    "no-use-before-define": "warn",
+    "keyword-spacing": "warn",
+    "arrow-parens": "off",
+    "no-throw-literal": "warn",
+    "no-restricted-globals": "off",
+    "valid-typeof": "warn",
+    "no-unneeded-ternary": "off",
+    "prefer-template": "off",
+    "padded-blocks": "off",
+    "no-unused-expressions": "off",
+    "no-shadow": "off"
+  }
+}
