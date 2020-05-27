@@ -7,6 +7,7 @@ describe('Counter Tests', () => {
     const expectedVal = 'Illegal character | in metric name illegal|name';
     blueMatador.counter('illegal|name', [], err => {
       expect(err).to.be.an('error', expectedVal);
+      blueMatador.close();
       done();
     })
   });
@@ -15,6 +16,7 @@ describe('Counter Tests', () => {
     const expectedVal = 'Illegal character # in metric name illegal#name';
     blueMatador.counter('illegal#name', [], err => {
       expect(err).to.be.an('error', expectedVal);
+      blueMatador.close();
       done();
     })
   });
@@ -23,6 +25,7 @@ describe('Counter Tests', () => {
     const expectedVal = 'Illegal character | in tag env:dev|1'
     blueMatador.counter('testMetric', ["valid_tag", "env:dev|1"], err => {
       expect(err).to.be.an('error', expectedVal);
+      blueMatador.close();
       done();
     });
   });
@@ -31,6 +34,7 @@ describe('Counter Tests', () => {
     const expectedVal = 'Illegal character # in tag env:dev#1'
     blueMatador.counter('testMetric', ["valid_tag", "env:dev#1"], err => {
       expect(err).to.be.an('error', expectedVal);
+      blueMatador.close();
       done();
     });
   });
@@ -38,6 +42,7 @@ describe('Counter Tests', () => {
     let blueMatador = init()
     blueMatador.counter('testMetric', ["env:dev"], null, resp => {
       expect(resp).to.be.a('number');
+      blueMatador.close();
       done();
     });
   });
@@ -49,6 +54,7 @@ describe('Gauge Tests', () => {
     const expectedVal = 'Illegal character # in metric name illegal#name';
     blueMatador.gauge('illegal#name', 32, [], err => {
       expect(err).to.be.an('error', expectedVal);
+      blueMatador.close();
       done();
     });
   });
@@ -57,6 +63,7 @@ describe('Gauge Tests', () => {
     const expectedVal = 'Illegal character | in metric name illegal|name';
     blueMatador.gauge('illegal|name', 32, [], err => {
       expect(err).to.be.an('error', expectedVal);
+      blueMatador.close();
       done();
     });
   });
@@ -65,6 +72,7 @@ describe('Gauge Tests', () => {
     const expectedVal = 'Metric value is not a number';
     blueMatador.gauge('cpu_util', true, [], err => {
       expect(err).to.be.an('error', expectedVal);
+      blueMatador.close();
       done();
     });
   });
@@ -73,6 +81,7 @@ describe('Gauge Tests', () => {
     const expectedVal = 'Illegal character | in tag env:dev|1'
     blueMatador.gauge('testMetric', 23, ["valid_tag", "env:dev|1"], err => {
       expect(err).to.be.an('error', expectedVal);
+      blueMatador.close();
       done();
     });
   });
@@ -81,6 +90,7 @@ describe('Gauge Tests', () => {
     const expectedVal = 'Illegal character # in tag env:dev#1'
     blueMatador.gauge('testMetric', 23, ["valid_tag", "env:dev#1"], err => {
       expect(err).to.be.an('error', expectedVal);
+      blueMatador.close();
       done();
     });
   });
@@ -88,6 +98,7 @@ describe('Gauge Tests', () => {
     let blueMatador = init()
     blueMatador.gauge('testMetric', 23, ["env:dev"], null, resp => {
       expect(resp).to.be.a('number');
+      blueMatador.close();
       done();
     });
   });
@@ -100,4 +111,15 @@ describe('Init Client Tests', () => {
      done();
    });
   });
+  it('should test the init function with incorrect port parameter', done => {
+    let blueMatador = init(null, "string", err => {
+      expect(err).to.be.an('error', 'The port argument must be of type number. Received type string');
+      done();
+    })
+  })
+  it('should test the init function with no parameters sent and the default settings applied', done => {
+    let blueMatador = init();
+    expect(blueMatador).to.be.an('object');
+    done();
+  })
 });
