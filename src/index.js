@@ -97,9 +97,9 @@ const init = (host, port, errorHandler) => {
     } else if(typeof port !== 'number' && port) {
       throw new Error('The port argument must be of type number. Received type ' + typeof port);
     } else {
-      const host = host ? host : 'localhost'
-      const port = port ? port : 8767
-      const client = new BlueMatadorClient(host, port);
+      const clientHost = host ? host : 'localhost'
+      const clientPort = port ? port : 8767
+      const client = new BlueMatadorClient(clientHost, clientPort);
       client.init()
       return client;
     }
