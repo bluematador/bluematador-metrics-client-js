@@ -107,16 +107,20 @@ describe('Gauge Tests', () => {
 
 describe('Init Client Tests', () => {
   it('should test the init function with incorrect host parameter', done => {
-   let blueMatador = init(8787, 8787, err => {
-     expect(err).to.be.an('error', 'The host argument must be one of type string or falsy. Recieved type number');
-     done();
-   });
+    try {
+      let blueMatador = init(8787, 8787)
+    } catch(err) {
+      expect(err).to.be.an('error', 'The host argument must be one of type string or falsy. Recieved type number');
+      done();
+    }
   });
   it('should test the init function with incorrect port parameter', done => {
-    let blueMatador = init(null, "string", err => {
+    try {
+      let blueMatador = init(null, "string")
+    } catch(err) {
       expect(err).to.be.an('error', 'The port argument must be of type number. Received type string');
       done();
-    });
+    }
   });
   it('should test the init function with no parameters sent and the default settings applied', done => {
     let blueMatador = init();

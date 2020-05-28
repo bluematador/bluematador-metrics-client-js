@@ -1,9 +1,9 @@
-const sanitize = (name, amount, sampleRate, tags) => {
-  checkName(name)
-  checkValue(amount)
-  sampleRate && checkSampleRate(sampleRate)
-  if(Array.isArray(tags)) {
-    checkTags(tags)
+const sanitize = metric => {
+  checkName(metric.name)
+  checkValue(metric.value)
+  checkSampleRate(metric.sampleRate)
+  if(Array.isArray(metric.tags) && metric.tags.length) {
+    checkTags(metric.tags)
   }
   return true
 }
