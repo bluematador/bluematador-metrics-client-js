@@ -2,6 +2,12 @@ const StatsD = require('hot-shots');
 const { sanitize } = require('./sanitizer')
 
 const createGaugeMetric = (name, value, sampleRate, tags) => {
+  if(!name || typeof name !== 'string') {
+    throw new Error('Metric name is missing or is an invalid type. Must be type string')
+  }
+  if(!value || typeof value !== 'number') {
+    throw new Error('Metric value is missing or is an invalid type. Must be type number')
+  }
   const metric = {
     name,
     value,
@@ -19,6 +25,9 @@ const createGaugeMetric = (name, value, sampleRate, tags) => {
 }
 
 const createCounterMetric = (name, value, sampleRate, tags) => {
+  if(!name || typeof name !== 'string') {
+    throw new Error('Metric name is missing or is an invalid type. Must be type string')
+  }
   const metric = {
     name,
     value,
@@ -70,9 +79,9 @@ const init = (host, port) => {
   let client = null
 
   const gauge = (name, value, sampleRate, tags) => {
-    const metric = createGaugeMetric(name, value, sampleRate, tags)
     return new Promise((resolve, reject) => {
       try {
+        const metric = createGaugeMetric(name, value, sampleRate, tags)
         if(sanitize(metric)) {
            client.gauge(metric.name, metric.value, metric.sampleRate, metric.tags, (err, bytes) => {
             if(err) {
@@ -89,9 +98,9 @@ const init = (host, port) => {
   };
 
   const counter = (name, value, sampleRate, tags, responseHandler) => {
-    const metric = createCounterMetric(name, value, sampleRate, tags, responseHandler)
     return new Promise((resolve, reject) => {
       try {
+        const metric = createCounterMetric(name, value, sampleRate, tags, responseHandler)
         if(sanitize(metric)) {
           client.increment(metric.name, metric.value, metric.sampleRate, metric.tags, (err, bytes) => {
             if(err) {
