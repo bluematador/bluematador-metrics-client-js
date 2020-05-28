@@ -115,11 +115,16 @@ describe('Init Client Tests', () => {
     let blueMatador = init(null, "string", err => {
       expect(err).to.be.an('error', 'The port argument must be of type number. Received type string');
       done();
-    })
-  })
+    });
+  });
   it('should test the init function with no parameters sent and the default settings applied', done => {
     let blueMatador = init();
-    expect(blueMatador).to.be.an('object');
+    expect(blueMatador).to.be.an('object').that.has.all.keys('host', 'port', 'tagSeparator', 'client', 'sanitizer', 'init', 'gauge', 'counter', 'close')
     done();
-  })
+  });
+  it('should test the init function with host and port parameters sent', done => {
+    let blueMatador = init("localhost", 8080);
+    expect(blueMatador).to.be.an('object').that.has.all.keys('host', 'port', 'tagSeparator', 'client', 'sanitizer', 'init', 'gauge', 'counter', 'close')
+    done();
+  });
 });
