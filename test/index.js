@@ -97,6 +97,7 @@ describe('Gauge Tests', () => {
   it('should test the sendGauge function with correct parameters and return the number of bytes sent to the UDP port', done => {
     let blueMatador = init()
     blueMatador.gauge('testMetric', 23, ["env:dev"], null, resp => {
+      console.log(resp)
       expect(resp).to.be.a('number');
       blueMatador.close();
       done();
@@ -119,12 +120,12 @@ describe('Init Client Tests', () => {
   });
   it('should test the init function with no parameters sent and the default settings applied', done => {
     let blueMatador = init();
-    expect(blueMatador).to.be.an('object').that.has.all.keys('host', 'port', 'tagSeparator', 'client', 'sanitizer', 'init', 'gauge', 'counter', 'close')
+    expect(blueMatador).to.be.an('object').that.has.all.keys('gauge', 'counter', 'close')
     done();
   });
   it('should test the init function with host and port parameters sent', done => {
     let blueMatador = init("localhost", 8080);
-    expect(blueMatador).to.be.an('object').that.has.all.keys('host', 'port', 'tagSeparator', 'client', 'sanitizer', 'init', 'gauge', 'counter', 'close')
+    expect(blueMatador).to.be.an('object').that.has.all.keys('gauge', 'counter', 'close')
     done();
   });
 });

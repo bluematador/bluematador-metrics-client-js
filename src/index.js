@@ -1,93 +1,42 @@
 const StatsD = require('hot-shots');
+const { sanitize } = require('./sanitizer')
 
-function BlueMatadorClient(host, port) {
-  this.host = host;
-  this.port = port;
-  this.tagSeparator = '#';
-  this.client = null
-  this.sanitizer = null
+let client = null
 
-  this.init = () => {
-    this.client = new StatsD({
-      host: this.host,
-      port: this.port,
-      tagSeparator: '#',
-    });
-    this.sanitizer = new Sanitizer();
+const gauge = async (gauge, value, tags, errorHandler, successHandler) => {
+  try {
+    if(sanitize(gauge, value, null, tags)) {
+      await client.gauge(gauge, value, 1, tags, (err, bytes) => {
+        if(err) {
+          typeof errorHandler === 'function' && errorHandler(err)
+        } else {
+          typeof successHandler === 'function' && successHandler(bytes)
+        }
+      });
+    }
+  } catch(err) {
+    typeof errorHandler === 'function' && errorHandler(err)
   }
+};
 
-  this.gauge = async (gauge, amount, tags, errorHandler, successHandler) => {
-    try {
-      if(this.sanitizer.sanitizeData(gauge, amount, tags)) {
-        await this.client.gauge(gauge, amount, 1, tags, (err, bytes) => {
-          if(err) {
-            typeof errorHandler === 'function' ? errorHandler(err) : null
-          } else {
-            typeof successHandler === 'function' ? successHandler(bytes) : null
-          }
-        });
-      }
-    } catch(err) {
-      typeof errorHandler === 'function' ? errorHandler(err) : null
+const counter = async (counter, value, tags, errorHandler, successHandler) => {
+  try {
+    if(sanitize(counter, value, null, tags)) {
+      await client.increment(counter, 1, 1, tags, (err, bytes) => {
+        if(err) {
+          typeof errorHandler === 'function' && errorHandler(err)
+        } else {
+          typeof successHandler === 'function' && successHandler(bytes)
+        }
+      });
     }
-  };
+  } catch(err) {
+    typeof errorHandler === 'function' && errorHandler(err)
+  }
+};
 
-  this.counter = async (counter, tags, errorHandler, successHandler) => {
-    try {
-      if(this.sanitizer.sanitizeData(counter, 0, tags)) {
-        await this.client.increment(counter, 1, 1, tags, (err, bytes) => {
-          if(err) {
-            typeof errorHandler === 'function' ? errorHandler(err) : null
-          } else {
-            typeof successHandler === 'function' ? successHandler(bytes) : null
-          }
-        });
-      }
-    } catch(err) {
-      typeof errorHandler === 'function' ? errorHandler(err) : null
-    }
-  };
-  this.close = () => {
-    this.client.close()
-  }
-}
-
-function Sanitizer() {
-  this.sanitizeData = (name, amount, tags) => {
-    this.checkName(name)
-    this.checkValue(amount)
-    if(Array.isArray(tags)) {
-      this.checkTags(tags)
-    }
-    return true
-  }
-
-  this.checkName = name => {
-    if(name.includes('#')) {
-      throw new Error(`Illegal character # in metric name ${name}`)
-    }
-    if(name.includes('|')) {
-      throw new Error(`Illegal character | in metric name ${name}`)
-    }
-    return true
-  }
-  this.checkValue = number => {
-    if(typeof number !== 'number') {
-      throw new Error('Metric value is not a number')
-    }
-    return true
-  }
-  this.checkTags = tags => {
-    tags.forEach(tag => {
-      if(tag.includes('#')) {
-        throw new Error(`Illegal character # in tag ${tag}`)
-      }
-      if(tag.includes('|')) {
-        throw new Error(`Illegal character | in tag ${tag}`)
-      }
-    })
-    return true
-  }
+const close = () => {
+  client.close()
 }
 
 const init = (host, port, errorHandler) => {
@@ -97,15 +46,21 @@ const init = (host, port, errorHandler) => {
     } else if(typeof port !== 'number' && port) {
       throw new Error('The port argument must be of type number. Received type ' + typeof port);
     } else {
-      const clientHost = host ? host : 'localhost'
-      const clientPort = port ? port : 8767
-      const client = new BlueMatadorClient(clientHost, clientPort);
-      client.init()
-      return client;
+      client = new StatsD({
+        host: host ? host : 'localhost',
+        port: port ? port : 8767,
+        tagSeparator: '#',
+      });
+
+      return {
+        gauge,
+        counter,
+        close
+      }
     }
   } catch(err) {
     console.error(err)
-    typeof errorHandler === 'function' ? errorHandler(err) : null
+    typeof errorHandler === 'function' && errorHandler(err)
     return {}
   }
 };
