@@ -50,7 +50,7 @@ client.gauge("testMetric", 32.25, 1, { environment: "Prod", account_id: 1232151 
 })
 ```
 
-The `gauge` method takes the following parameters
+The `gauge` method takes the following parameters:
   * `Name: required` The metric name should be a string describing your metric.
   * `Value: required` The metric value should be a number that will gauge the metric.
   * `sampleRate: optional` The sample rate controls the amount of data sent. The default is 1.
@@ -58,14 +58,66 @@ The `gauge` method takes the following parameters
   ```
   // Example of an array of tags
   let arrayTags = ["env:dev", "account_id:123456"];
-  
+
   // Example of an object containing tags
   let objectTags = { env: "Dev", account_id: 123456 };
 
   // note if tags are sent in an object they will get transformed into an array of strings. The strings will be made up of the key value pair seperated by a semi-colon.
   ```
 
+### Counter
+
+The `counter` method allows you to send statsD-style custom counter metrics to Blue Matador. 
+
+Like the `gauge` method, the `counter` method returns a Promise and can be chained on with `.then()` and `.catch()`
+
+If the Metric is successfully sent to the Blue Matador Agent the `.then()` response will always be `"Metric successfully sent"`
+
+```
+const blueMatador = require('blue-matador-metric-exporter');
+const client = blueMatador.init();
+
+client.gauge("testMetric", 1, 1, { environment: "Prod", account_id: 1232151 }).then(resp => {
+  console.log("Success!")
+}).catch(err => {
+  console.log(err)
+})
+```
+
+The counter method takes the following parameters: 
+  * `Name: required` The metric name should be a string describing your metric.
+  * `Value: optional` The counter metric value is the amount to increment the metric by, the default value is 1. 
+  * `sampleRate: optional` The sample rate controls the amount of data sent. The default is 1.
+  * `tags: optional` The metric tags should be formatted as either an array of strings, or an object containing tags in key value pairs.
+
+**Note:** because the counter value is optional, if you want to set the sampleRate the counter value must be explicily set as well.   
+
+**Note:** for an example of how to format metric tags, refer to the example above. 
+
+The following are all valid ways to send a counter metric:
+
+```
+client.counter("testCounter");
+
+client.counter("testCounter", 2);
+
+client.counter("testCounter", 2, 1);
+
+client.counter("testCounter", { environment: "Prod", account_id: 1232151 });
+
+client.counter("testCounter", 2, { environment: "Prod", account_id: 1232151 });
+
+```
+
+### Close
+
+The close method should be called when shutting down your app.
+
+```
+client.close();
+```
+
 
 # License
 
-MIT © Dinesh Pandiyan
+MIT © Blue Matador
