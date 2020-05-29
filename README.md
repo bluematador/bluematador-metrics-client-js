@@ -3,7 +3,7 @@
 **Send StatsD-style custom metrics to your Blue Matador dashboard** 
 
 ## Installation
-  * npm install blue-matador-metric-exporter
+  * `npm install blue-matador-metric-exporter`
 
 ## Usage
 
@@ -13,7 +13,7 @@ To start using the Blue Matador metric exporter, simply require the package and 
 const blueMatador = require('blue-matador-metric-exporter');
 const client = blueMatador.init();
 ```
-### The init() method takes two optional parameters
+### The init method takes two optional parameters
   * `host`
   * `port`
 
@@ -29,7 +29,7 @@ const client = blueMatador.init("127.0.0.1", 8080);
 **Note:** The port parameter should be set to match the UDP port you have set in your config file for the Blue Matador Agent.
 
 
-### The init() method returns an object containing 3 methods
+### The init method returns an object containing 3 methods:
 
 ### Gauge
 
@@ -37,7 +37,7 @@ The `gauge` method allows you to send statsD-style custom gauge metrics to Blue 
 
 The `gauge` method returns a Promise and can be chained on with `.then()` and `.catch()`
 
-If the Metric is successfully sent to Blue Matador's Agent the `.then()` response will always be `Metric successfully sent`
+If the Metric is successfully sent to the Blue Matador Agent the `.then()` response will always be `"Metric successfully sent"`
 
 ```
 const blueMatador = require('blue-matador-metric-exporter');
