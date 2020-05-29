@@ -65,6 +65,19 @@ The `gauge` method takes the following parameters:
   // note if tags are sent in an object they will get transformed into an array of strings. The strings will be made up of the key value pair seperated by a semi-colon.
   ```
 
+The following are all valid ways to send a gauge metric:
+
+```
+client.gauge("testGauge", 23.2323);
+
+client.gauge("testGauge", 23, 1);
+
+client.gauge("testGauge", 23, { environment: "Prod", account_id: 1232151 });
+
+client.gauge("testGauge", 23, 1, { environment: "Prod", account_id: 1232151 });
+
+```
+
 ### Counter
 
 The `counter` method allows you to send statsD-style custom counter metrics to Blue Matador. 
