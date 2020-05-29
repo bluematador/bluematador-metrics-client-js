@@ -2,10 +2,10 @@
 
 **Send StatsD-style custom metrics to your Blue Matador dashboard** 
 
-# Installation
-..* npm install blue-matador-metric-exporter
+## Installation
+  * npm install blue-matador-metric-exporter
 
-# Usage
+## Usage
 
 To start using the Blue Matador metric exporter, simply require the package and call the init method.
 
@@ -14,8 +14,8 @@ const blueMatador = require('blue-matador-metric-exporter');
 const client = blueMatador.init();
 ```
 ### The init() method takes two optional parameters
-..* `host`
-..* `port`
+  * `host`
+  * `port`
 
 The `host` parameter specifies the host to send the custom metrics to. If no host is specified, `localhost` is the default host.
 
