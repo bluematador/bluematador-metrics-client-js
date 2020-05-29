@@ -19,6 +19,7 @@
     "padded-blocks": "off",
     "no-unused-expressions": "off",
     "no-shadow": "off",
-    "max-len": "off"
+    "max-len": "off",
+    "arrow-body-style": "off"
   }
 }

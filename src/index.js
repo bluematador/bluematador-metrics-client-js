@@ -17,7 +17,7 @@ const createGaugeMetric = (name, value, sampleRate, tags) => {
   if(typeof sampleRate !== 'number') {
     metric.tags = typeof sampleRate === 'object' ? sampleRate : []
     metric.sampleRate = 1
-  } else if (typeof tags === 'function') {
+  } else if (!tags) {
     metric.tags = []
   }
   metric.tags = formatTags(metric.tags)
@@ -51,21 +51,21 @@ const createCounterMetric = (name, value, sampleRate, tags) => {
 }
 
 const formatTags = tags => {
-  let formattedTags = []
+  const formattedTags = []
   if(tags) {
     if(Array.isArray(tags)) {
       tags.forEach(tag => {
         if(typeof tag === 'string') {
           formattedTags.push(tag)
-        } else if(typeof tag === 'number') {
+        } else if(typeof tag === 'number' || typeof tag === 'boolean') {
           formattedTags.push(tag.toString())
         }
       })
     } else if(typeof tags === 'object') {
-      let objectTags = Object.entries(tags)
+      const objectTags = Object.entries(tags)
       objectTags.forEach(tag => {
-        if(typeof tag[1] === 'string' || typeof tag[1] === 'number' || typeof tag[1] === 'boolean' ) {
-          formattedTags.push(tag[0].toString() + ":" + tag[1].toString())
+        if(typeof tag[1] === 'string' || typeof tag[1] === 'number' || typeof tag[1] === 'boolean') {
+          formattedTags.push(tag[0].toString() + ':' + tag[1].toString())
         } else {
           formattedTags.push(tag[0].toString())
         }
@@ -83,7 +83,7 @@ const init = (host, port) => {
       try {
         const metric = createGaugeMetric(name, value, sampleRate, tags)
         if(sanitize(metric)) {
-           client.gauge(metric.name, metric.value, metric.sampleRate, metric.tags, (err, bytes) => {
+           client.gauge(metric.name, metric.value, metric.sampleRate, metric.tags, (err) => {
             if(err) {
               reject(err)
             } else {
@@ -102,7 +102,7 @@ const init = (host, port) => {
       try {
         const metric = createCounterMetric(name, value, sampleRate, tags, responseHandler)
         if(sanitize(metric)) {
-          client.increment(metric.name, metric.value, metric.sampleRate, metric.tags, (err, bytes) => {
+          client.increment(metric.name, metric.value, metric.sampleRate, metric.tags, (err) => {
             if(err) {
               reject(err)
             } else {
@@ -111,7 +111,8 @@ const init = (host, port) => {
           });
         }
       } catch(err) {
-        reject(err)      }
+        reject(err)
+      }
     })
   };
   const close = () => {
