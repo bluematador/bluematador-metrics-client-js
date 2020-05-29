@@ -50,6 +50,21 @@ client.gauge("testMetric", 32.25, 1, { environment: "Prod", account_id: 1232151 
 })
 ```
 
+The `gauge` method takes the following parameters
+  * `Name: required` The metric name should be a string describing your metric.
+  * `Value: required` The metric value should be a number that will gauge the metric.
+  * `sampleRate: optional` The sample rate controls the amount of data sent. The default is 1.
+  * `tags: optional` The metric tags should be formatted as either an array of strings, or an object containing tags in key value pairs.
+  ```
+  // Example of an array of tags
+  let arrayTags = ["env:dev", "account_id:123456"];
+  
+  // Example of an object containing tags
+  let objectTags = { env: "Dev", account_id: 123456 };
+
+  // note if tags are sent in an object they will get transformed into an array of strings. The strings will be made up of the key value pair seperated by a semi-colon.
+  ```
+
 
 # License
 
