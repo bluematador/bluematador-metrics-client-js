@@ -13,13 +13,12 @@ To start using the Blue Matador metric exporter, simply require the package and 
 const blueMatador = require('blue-matador-metric-exporter');
 const client = blueMatador.init();
 ```
-### The init method takes two optional parameters
-  * `host`
-  * `port`
 
-The `host` parameter specifies the host to send the custom metrics to. If no host is specified, `localhost` is the default host.
+### Init
+`init([host], [port])`
+  * `host: (optional)` The `host` parameter specifies the host to send the custom metrics to. If no host is specified, `localhost` is the default host.
+  * `port: (optional)` The `port` parameter specifies the port to send the custom metrics to. If no port is specified, `8767` is the default port. 
 
-The `port` parameter specifies the port to send the custom metrics to. If no port is specified, `8767` is the default port. 
 
 ```
 const blueMatador = require('blue-matador-metric-exporter');
@@ -51,19 +50,11 @@ client.gauge("testMetric", 32.25, 1, { environment: "Prod", account_id: 1232151 
 ```
 
 The `gauge` method takes the following parameters:
-  * `Name: required` The metric name should be a string describing your metric.
-  * `Value: required` The metric value should be a number that will gauge the metric.
-  * `sampleRate: optional` The sample rate controls the amount of data sent. The default is 1.
-  * `tags: optional` The metric tags should be formatted as either an array of strings, or an object containing tags in key value pairs.
-  ```
-  // Example of an array of tags
-  let arrayTags = ["env:dev", "account_id:123456"];
+  * `Name: (required)` The metric name e.g. 'myapp.request.size'. Cannot contain '#' or '|'
+  * `Value: (required)` The latest value to set for the metric
+  * `sampleRate: (optional)` sends only a sample of data e.g. 0.5 indicates 50% of data being sent. Default value is 1
+  * `tags: (optional)`  adds metadata to a metric. Can be specified as object or array of strings with key-value pairs formatted with a colon separator e.g. ['account:12345'] or {account: 12345}. Cannot contain '#' or '|'
 
-  // Example of an object containing tags
-  let objectTags = { env: "Dev", account_id: 123456 };
-
-  // note if tags are sent in an object they will get transformed into an array of strings. The strings will be made up of the key value pair seperated by a semi-colon.
-  ```
 
 The following are all valid ways to send a gauge metric:
 
@@ -97,15 +88,14 @@ client.gauge("testMetric", 1, 1, { environment: "Prod", account_id: 1232151 }).t
 })
 ```
 
-The counter method takes the following parameters: 
-  * `Name: required` The metric name should be a string describing your metric.
-  * `Value: optional` The counter metric value is the amount to increment the metric by, the default value is 1. 
-  * `sampleRate: optional` The sample rate controls the amount of data sent. The default is 1.
-  * `tags: optional` The metric tags should be formatted as either an array of strings, or an object containing tags in key value pairs.
+The `counter` method takes the following parameters: 
+  * `Name: (required)` The metric name e.g. 'myapp.request.size'. Cannot contain '#' or '|'
+  * `Value: (optional)` the amount to increment the metric by, the default is 1. 
+  * `sampleRate: (optional)` sends only a sample of data e.g. 0.5 indicates 50% of data being sent. Default value is 1
+  * `tags: (optional)`  adds metadata to a metric. Can be specified as object or array of strings with key-value pairs formatted with a colon separator e.g. ['account:12345'] or {account: 12345}. Cannot contain '#' or '|'
 
-**Note:** because the counter value is optional, if you want to set the sampleRate the counter value must be explicily set as well.   
+**Note:** because the counter value is optional, if you want to set the sampleRate the counter value must be explicitly set as well.   
 
-**Note:** for an example of how to format metric tags, refer to the example above. 
 
 The following are all valid ways to send a counter metric:
 
