@@ -22,7 +22,7 @@ const client = blueMatador.init();
 
 ```
 const blueMatador = require('blue-matador-metric-exporter');
-const client = blueMatador.init("127.0.0.1", 8080);
+const client = blueMatador.init('127.0.0.1', 8080);
 ```
 
 **Note:** The port parameter should be set to match the UDP port you have in your config file for the Blue Matador Agent.
@@ -40,14 +40,14 @@ Once you have an instance of the Blue Matador metric exporter in your code you c
 
 The `gauge` method is asynchronous and returns a Promise that can be chained on with `.then()` and `.catch()`
 
-If the Metric is successfully sent to the Blue Matador Agent the `.then()` response will always be `"Metric successfully sent"`
+If the Metric is successfully sent to the Blue Matador Agent the `.then()` response will always be `'Metric successfully sent'`
 
 ```
 const blueMatador = require('blue-matador-metric-exporter');
 const client = blueMatador.init();
 
-client.gauge("testMetric", 32.25, 1, { environment: "Prod", account_id: 1232151 }).then(resp => {
-  console.log("Success!")
+client.gauge('testMetric', 32.25, 1, { environment: 'Prod', account_id: 1232151 }).then(resp => {
+  console.log('Success!')
 }).catch(err => {
   console.log(err)
 })
@@ -56,13 +56,13 @@ client.gauge("testMetric", 32.25, 1, { environment: "Prod", account_id: 1232151 
 The following are all valid ways to send a gauge metric:
 
 ```
-client.gauge("testGauge", 23.2323);
+client.gauge('testGauge', 23.2323);
 
-client.gauge("testGauge", 23, 1);
+client.gauge('testGauge', 23, 1);
 
-client.gauge("testGauge", 23, { environment: "Prod", account_id: 1232151 });
+client.gauge('testGauge', 23, { environment: 'Prod', account_id: 1232151 });
 
-client.gauge("testGauge", 23, 1, { environment: "Prod", account_id: 1232151 });
+client.gauge('testGauge', 23, 1, { environment: 'Prod', account_id: 1232151 });
 
 ```
 
@@ -77,14 +77,14 @@ client.gauge("testGauge", 23, 1, { environment: "Prod", account_id: 1232151 });
 
 The `counter` method is asynchronous and returns a Promise that can be chained on with `.then()` and `.catch()`
 
-If the Metric is successfully sent to the Blue Matador Agent the `.then()` response will always be `"Metric successfully sent"`
+If the Metric is successfully sent to the Blue Matador Agent the `.then()` response will always be `'Metric successfully sent'`
 
 ```
 const blueMatador = require('blue-matador-metric-exporter');
 const client = blueMatador.init();
 
-client.gauge("testMetric", 1, 1, { environment: "Prod", account_id: 1232151 }).then(resp => {
-  console.log("Success!")
+client.gauge('testMetric', 1, 1, { environment: 'Prod', account_id: 1232151 }).then(resp => {
+  console.log('Success!')
 }).catch(err => {
   console.log(err)
 })
@@ -93,15 +93,15 @@ client.gauge("testMetric", 1, 1, { environment: "Prod", account_id: 1232151 }).t
 The following are all valid ways to send a counter metric:
 
 ```
-client.counter("testCounter");
+client.counter('testCounter');
 
-client.counter("testCounter", 2);
+client.counter('testCounter', 2);
 
-client.counter("testCounter", 2, 1);
+client.counter('testCounter', 2, 1);
 
-client.counter("testCounter", { environment: "Prod", account_id: 1232151 });
+client.counter('testCounter', { environment: 'Prod', account_id: 1232151 });
 
-client.counter("testCounter", 2, { environment: "Prod", account_id: 1232151 });
+client.counter('testCounter', 2, { environment: 'Prod', account_id: 1232151 });
 
 ```
 
