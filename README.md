@@ -38,8 +38,6 @@ Once you have an instance of the Blue Matador metric exporter in your code you c
   * `sampleRate: (optional)` sends only a sample of data e.g. 0.5 indicates 50% of data being sent. Default value is 1
   * `tags: (optional)`  adds metadata to a metric. Can be specified as object or array of strings with key-value pairs formatted with a colon separator e.g. ['account:12345'] or {account: 12345}. Cannot contain '#' or '|'
 
-The `gauge` method allows you to send statsD-style custom gauge metrics to Blue Matador. 
-
 The `gauge` method is asynchronous and returns a Promise that can be chained on with `.then()` and `.catch()`
 
 If the Metric is successfully sent to the Blue Matador Agent the `.then()` response will always be `"Metric successfully sent"`
@@ -76,8 +74,6 @@ client.gauge("testGauge", 23, 1, { environment: "Prod", account_id: 1232151 });
   * `tags: (optional)`  adds metadata to a metric. Can be specified as object or array of strings with key-value pairs formatted with a colon separator e.g. ['account:12345'] or {account: 12345}. Cannot contain '#' or '|'
 
 **Note:** because the counter value is optional, if you want to set the sampleRate the counter value must be set as well.   
-
-The `counter` method allows you to send statsD-style custom counter metrics to Blue Matador. 
 
 The `counter` method is asynchronous and returns a Promise that can be chained on with `.then()` and `.catch()`
 
