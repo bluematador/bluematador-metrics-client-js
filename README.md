@@ -25,10 +25,11 @@ const blueMatador = require('blue-matador-metric-exporter');
 const client = blueMatador.init("127.0.0.1", 8080);
 ```
 
-**Note:** The port parameter should be set to match the UDP port you have set in your config file for the Blue Matador Agent.
+**Note:** The port parameter should be set to match the UDP port you have in your config file for the Blue Matador Agent.
 
 
-### The init method returns an object containing 3 methods:
+Once you have an instance of the Blue Matador metric exporter in your code you can start sending custom metrics. 
+
 
 ### Gauge
 
