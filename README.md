@@ -116,4 +116,6 @@ client.close();
 
 # License
 
-MIT © Blue Matador
+More details in [LICENSE.](https://github.com/bluematador/bluematador-metrics-client-js/blob/master/LICENSE)
+
+Copyright (c) 2020 [Blue Matador, Inc.](https://www.bluematador.com/)
