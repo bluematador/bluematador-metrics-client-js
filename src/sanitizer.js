@@ -8,8 +8,8 @@ const sanitize = metric => {
   return true
 }
 const checkName = name => {
-  if(name.includes('#')) {
-    throw new Error(`Illegal character # in metric name ${name}`)
+  if(name.includes(':')) {
+    throw new Error(`Illegal character : in metric name ${name}`)
   }
   if(name.includes('|')) {
     throw new Error(`Illegal character | in metric name ${name}`)

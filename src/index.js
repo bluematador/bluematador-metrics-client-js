@@ -124,9 +124,11 @@ const init = (host, port) => {
   } else if(typeof port !== 'number' && port) {
     throw new Error('The port argument must be of type number. Received type ' + typeof port);
   } else {
+    let host = host ? host : 'localhost';
+    let port = port ? port : 8767;
     client = new StatsD({
-      host: host ? host : 'localhost',
-      port: port ? port : 8767,
+      host: process.env.BLUEMATADOR_AGENT_HOST || host,
+      port: process.env.BLUEMATADOR_AGENT_PORT || port,
       tagSeparator: '#',
     });
     return {

@@ -22,7 +22,7 @@ const client = blueMatador.init();
 
 ```
 const blueMatador = require('blue-matador-metric-exporter');
-const client = blueMatador.init('127.0.0.1', 8080);
+const client = blueMatador.init('127.0.0.1', 8767);
 ```
 
 **Note:** The port parameter should be set to match the UDP port you have in your config file for the Blue Matador Agent.
@@ -68,7 +68,7 @@ client.gauge('testGauge', 23, 1, { environment: 'Prod', account_id: 1232151 });
 
 ### Counter
 `counter(name, [value], [sampleRate], [tags])`
-  * `Name: (required)` The metric name e.g. 'myapp.request.size'. Cannot contain '#' or '|'
+  * `Name: (required)` The metric name e.g. 'myapp.request.size'. Cannot contain ':' or '|'
   * `Value: (optional)` the amount to increment the metric by, the default is 1. 
   * `sampleRate: (optional)` sends only a sample of data e.g. 0.5 indicates 50% of data being sent. Default value is 1
   * `tags: (optional)`  adds metadata to a metric. Can be specified as object or array of strings with key-value pairs formatted with a colon separator e.g. ['account:12345'] or {account: 12345}. Cannot contain '#' or '|'
