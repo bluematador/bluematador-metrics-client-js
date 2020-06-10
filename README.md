@@ -66,16 +66,16 @@ client.gauge('testGauge', 23, 1, { environment: 'Prod', account_id: 1232151 });
 
 ```
 
-### Counter
-`counter(name, [value], [sampleRate], [tags])`
+### Count
+`count(name, [value], [sampleRate], [tags])`
   * `Name: (required)` The metric name e.g. 'myapp.request.size'. Cannot contain ':' or '|'
   * `Value: (optional)` the amount to increment the metric by, the default is 1. 
   * `sampleRate: (optional)` sends only a sample of data e.g. 0.5 indicates 50% of data being sent. Default value is 1
   * `tags: (optional)`  adds metadata to a metric. Can be specified as object or array of strings with key-value pairs formatted with a colon separator e.g. ['account:12345'] or {account: 12345}. Cannot contain '#' or '|'
 
-**Note:** because the counter value is optional, if you want to set the sampleRate the counter value must be set as well.   
+**Note:** because the count value is optional, if you want to set the sampleRate the count value must be set as well.   
 
-The `counter` method is asynchronous and returns a Promise that can be chained on with `.then()` and `.catch()`
+The `count` method is asynchronous and returns a Promise that can be chained on with `.then()` and `.catch()`
 
 If the Metric is successfully sent to the Blue Matador Agent the `.then()` response will always be `'Metric successfully sent'`
 
@@ -83,25 +83,25 @@ If the Metric is successfully sent to the Blue Matador Agent the `.then()` respo
 const blueMatador = require('blue-matador-metric-exporter');
 const client = blueMatador.init();
 
-client.gauge('testMetric', 1, 1, { environment: 'Prod', account_id: 1232151 }).then(resp => {
+client.count('testMetric', 1, 1, { environment: 'Prod', account_id: 1232151 }).then(resp => {
   console.log('Success!')
 }).catch(err => {
   console.log(err)
 })
 ```
 
-The following are all valid ways to send a counter metric:
+The following are all valid ways to send a count metric:
 
 ```
-client.counter('testCounter');
+client.count('testCounter');
 
-client.counter('testCounter', 2);
+client.count('testCounter', 2);
 
-client.counter('testCounter', 2, 1);
+client.count('testCounter', 2, 1);
 
-client.counter('testCounter', { environment: 'Prod', account_id: 1232151 });
+client.count('testCounter', { environment: 'Prod', account_id: 1232151 });
 
-client.counter('testCounter', 2, { environment: 'Prod', account_id: 1232151 });
+client.count('testCounter', 2, { environment: 'Prod', account_id: 1232151 });
 
 ```
 

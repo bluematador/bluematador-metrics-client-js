@@ -24,7 +24,7 @@ const createGaugeMetric = (name, value, sampleRate, tags) => {
   return metric
 }
 
-const createCounterMetric = (name, value, sampleRate, tags) => {
+const createCountMetric = (name, value, sampleRate, tags) => {
   if(!name || typeof name !== 'string') {
     throw new Error('Metric name is missing or is an invalid type. Must be type string')
   }
@@ -97,10 +97,10 @@ const init = (host, port) => {
     });
   };
 
-  const counter = (name, value, sampleRate, tags, responseHandler) => {
+  const count = (name, value, sampleRate, tags, responseHandler) => {
     return new Promise((resolve, reject) => {
       try {
-        const metric = createCounterMetric(name, value, sampleRate, tags, responseHandler)
+        const metric = createCountMetric(name, value, sampleRate, tags, responseHandler)
         if(sanitize(metric)) {
           client.increment(metric.name, metric.value, metric.sampleRate, metric.tags, (err) => {
             if(err) {
@@ -133,7 +133,7 @@ const init = (host, port) => {
     });
     return {
       gauge,
-      counter,
+      count,
       close
     }
   }
