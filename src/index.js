@@ -1,5 +1,5 @@
 const StatsD = require('hot-shots');
-const { sanitize } = require('./sanitizer')
+const { sanitize, sanitizeLabels } = require('./sanitizer')
 
 const createGaugeMetric = (name, value, sampleRate, tags) => {
   if(!name || typeof name !== 'string') {
@@ -47,6 +47,7 @@ const createCountMetric = (name, value, sampleRate, tags) => {
     metric.tags = []
   }
   metric.tags = formatTags(metric.tags)
+  console.log(metric.tags)
   return metric
 }
 
@@ -72,7 +73,8 @@ const formatTags = tags => {
       })
     }
   }
-  return formattedTags
+
+  return sanitizeLabels(formattedTags)
 }
 
 const init = (host, port) => {
@@ -124,11 +126,11 @@ const init = (host, port) => {
   } else if(typeof port !== 'number' && port) {
     throw new Error('The port argument must be of type number. Received type ' + typeof port);
   } else {
-    let host = host ? host : 'localhost';
-    let port = port ? port : 8767;
+    let finalHost = host ? host : 'localhost';
+    let finalPort = port ? port : 8767;
     client = new StatsD({
-      host: process.env.BLUEMATADOR_AGENT_HOST || host,
-      port: process.env.BLUEMATADOR_AGENT_PORT || port,
+      host: process.env.BLUEMATADOR_AGENT_HOST || finalHost,
+      port: process.env.BLUEMATADOR_AGENT_PORT || finalPort,
       tagSeparator: '#',
     });
     return {

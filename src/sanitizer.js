@@ -39,7 +39,43 @@ const checkTags = tags => {
   })
   return true
 }
+const sanitizeLabels = (formattedTags) => {
+  let sanitizedLabels = [];
+  formattedTags.forEach(label => {
+      let finalLabel = label
+      if(finalLabel.includes("#")) {
+        console.log("found #")
+        let newLabel = []
+        for(i = 0; i < finalLabel.length; i++) {
+            if(finalLabel[i] === "#") {
+                newLabel.push("_")
+            } else {
+              newLabel.push(finalLabel[i])
+            }
+
+        }
+        finalLabel = newLabel.join("")
+      }
+      if(finalLabel.includes("|")) {
+        console.log("found |")
+        let newLabel = []
+        for(i = 0; i < finalLabel.length; i++) {
+            if(finalLabel[i] === "|") {
+                newLabel.push("_")
+            } else {
+              newLabel.push(finalLabel[i])
+            }
+        }
+        finalLabel = newLabel.join("")
+      }
+      sanitizedLabels.push(finalLabel)
+    })
+    return sanitizedLabels
+}
+
+
 
 module.exports = {
-  sanitize
+  sanitize,
+  sanitizeLabels
 }

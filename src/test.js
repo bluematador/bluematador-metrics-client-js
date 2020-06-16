@@ -1,21 +1,21 @@
-const bluematador = require("./index").init()
+const bluematador = require("./index").init("localhost")
 
 
-bluematador.counter('testCounter1');
+bluematador.count('testcount1');
 
-bluematador.counter('testCounter2', 2);
+bluematador.count('testcount2', 2)
 
-bluematador.counter('testCounter3', 2, 1);
+bluematador.count('testcount3', 2, 1);
 
-bluematador.counter('testCounter4', { environment: 'Prod', account_id: 1232151 });
+bluematador.count('testcount4', { environment: '#Prod', account_id: 1232151 });
 
-bluematador.counter('testCounter5', 2, { environment: 'Prod', account_id: 1232151 });
+bluematador.count('testcount5', 2, { environment: 'Prod', account_id: 1232151 });
 
 
 bluematador.gauge('testGauge1', 23.2323);
 
 bluematador.gauge('testGauge2', 23, 1);
 
-bluematador.gauge('testGauge3', 23, { environment: 'Prod', account_id: 1232151 });
+bluematador.gauge('testGauge3', 23, { environment: 'Prod|', account_id: 1232151 });
 
 bluematador.gauge('testGauge4', 23, 1, { environment: 'Prod', account_id: 1232151 });

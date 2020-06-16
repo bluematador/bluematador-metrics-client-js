@@ -1,16 +1,16 @@
-# Blue Matador Metric Exporter
+# Blue Matador Metric Client
 
 **Send StatsD-style custom metrics to your Blue Matador dashboard** 
 
 ## Installation
-  * `npm install blue-matador-metric-exporter`
+  * `npm install blue-matador-metric-client`
 
-## Usage
+## Setup
 
-To start using the Blue Matador metric exporter, simply require the package and call the init method.
+To start using the Blue Matador metric client, simply require the package and call the init method.
 
 ```
-const blueMatador = require('blue-matador-metric-exporter');
+const blueMatador = require('blue-matador-metric-client');
 const client = blueMatador.init();
 ```
 
@@ -21,29 +21,29 @@ const client = blueMatador.init();
 
 
 ```
-const blueMatador = require('blue-matador-metric-exporter');
+const blueMatador = require('blue-matador-metric-client');
 const client = blueMatador.init('127.0.0.1', 8767);
 ```
 
 **Note:** The port parameter should be set to match the UDP port you have in your config file for the Blue Matador Agent.
 
 
-Once you have an instance of the Blue Matador metric exporter in your code you can start sending custom metrics. 
+Once you have an instance of the Blue Matador metric client in your code you can start sending custom metrics. 
 
 
 ### Gauge
-`gauge(name, value, [sampleRate], [tags])`
+`gauge(name, value, [sampleRate], [labels])`
   * `Name: (required)` The metric name e.g. 'myapp.request.size'. Cannot contain '#' or '|'
   * `Value: (required)` The latest value to set for the metric
   * `sampleRate: (optional)` sends only a sample of data e.g. 0.5 indicates 50% of data being sent. Default value is 1
-  * `tags: (optional)`  adds metadata to a metric. Can be specified as object or array of strings with key-value pairs formatted with a colon separator e.g. ['account:12345'] or {account: 12345}. Cannot contain '#' or '|'
+  * `labels: (optional)`  adds metadata to a metric. Can be specified as object or array of strings with key-value pairs formatted with a colon separator e.g. ['account:12345'] or {account: 12345}. Cannot contain '#' or '|'
 
 The `gauge` method is asynchronous and returns a Promise that can be chained on with `.then()` and `.catch()`
 
 If the Metric is successfully sent to the Blue Matador Agent the `.then()` response will always be `'Metric successfully sent'`
 
 ```
-const blueMatador = require('blue-matador-metric-exporter');
+const blueMatador = require('blue-matador-metric-client');
 const client = blueMatador.init();
 
 client.gauge('testMetric', 32.25, 1, { environment: 'Prod', account_id: 1232151 }).then(resp => {
@@ -56,22 +56,26 @@ client.gauge('testMetric', 32.25, 1, { environment: 'Prod', account_id: 1232151 
 The following are all valid ways to send a gauge metric:
 
 ```
-client.gauge('testGauge', 23.2323);
+# gauge 100
+Client.gauge("request.size", 100);
 
-client.gauge('testGauge', 23, 1);
+# gauge 100 but sample 50%
+Client.gauge("request.size", 100, 0.5);
 
-client.gauge('testGauge', 23, { environment: 'Prod', account_id: 1232151 });
+# gauge 100 with labels
+Client.gauge("request.size", 100, ["environment:Prod", "api"]);
 
-client.gauge('testGauge', 23, 1, { environment: 'Prod', account_id: 1232151 });
+# gauge 100, sample 50%, and send labels
+Client.gauge("request.size", 100, 0.5, ["environment:Prod", "api"]);
 
 ```
 
 ### Count
-`count(name, [value], [sampleRate], [tags])`
+`count(name, [value], [sampleRate], [labels])`
   * `Name: (required)` The metric name e.g. 'myapp.request.size'. Cannot contain ':' or '|'
   * `Value: (optional)` the amount to increment the metric by, the default is 1. 
   * `sampleRate: (optional)` sends only a sample of data e.g. 0.5 indicates 50% of data being sent. Default value is 1
-  * `tags: (optional)`  adds metadata to a metric. Can be specified as object or array of strings with key-value pairs formatted with a colon separator e.g. ['account:12345'] or {account: 12345}. Cannot contain '#' or '|'
+  * `labels: (optional)`  adds metadata to a metric. Can be specified as object or array of strings with key-value pairs formatted with a colon separator e.g. ['account:12345'] or {account: 12345}. Cannot contain '#' or '|'
 
 **Note:** because the count value is optional, if you want to set the sampleRate the count value must be set as well.   
 
@@ -80,7 +84,7 @@ The `count` method is asynchronous and returns a Promise that can be chained on 
 If the Metric is successfully sent to the Blue Matador Agent the `.then()` response will always be `'Metric successfully sent'`
 
 ```
-const blueMatador = require('blue-matador-metric-exporter');
+const blueMatador = require('blue-matador-metric-client');
 const client = blueMatador.init();
 
 client.count('testMetric', 1, 1, { environment: 'Prod', account_id: 1232151 }).then(resp => {
@@ -93,15 +97,20 @@ client.count('testMetric', 1, 1, { environment: 'Prod', account_id: 1232151 }).t
 The following are all valid ways to send a count metric:
 
 ```
-client.count('testCounter');
+# count 1
+Client.count("homepage.clicks");
 
-client.count('testCounter', 2);
+# count 2
+Client.count("hompage.clicks", 2);
 
-client.count('testCounter', 2, 1);
+# count 1 but sample 50%
+Client.count("homepage.clicks", 1, 0.5);
 
-client.count('testCounter', { environment: 'Prod', account_id: 1232151 });
+# count 2 and send labels
+Client.count("homepage.clicks", 2, ["environment:Prod", "homepage"]);
 
-client.count('testCounter', 2, { environment: 'Prod', account_id: 1232151 });
+# count 2, sample 50%, and send labels
+Client.count("homepage.clicks", 2, 0.5, ["environment:Prod", "homepage"]);
 
 ```
 
