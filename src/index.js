@@ -152,7 +152,69 @@ const init = (host, port, prefix) => {
   }
 }
 
+const initWithPrefix = (prefix) => {
+  let client = null
+
+  if(prefix && typeof prefix === 'string') {
+    metricPrefix = prefix
+  }
+
+  const gauge = (name, value, sampleRate, labels) => {
+    return new Promise((resolve, reject) => {
+      try {
+        const metric = createGaugeMetric(name, value, sampleRate, labels)
+        if(sanitize(metric)) {
+           client.gauge(metric.name, metric.value, metric.sampleRate, metric.labels, (err) => {
+            if(err) {
+              reject(err)
+            } else {
+              resolve('Metric successfully sent')
+            }
+          });
+        }
+      } catch(err) {
+        reject(err)
+      }
+    });
+  };
+
+  const count = (name, value, sampleRate, labels, responseHandler) => {
+    return new Promise((resolve, reject) => {
+      try {
+        const metric = createCountMetric(name, value, sampleRate, labels, responseHandler)
+        if(sanitize(metric)) {
+          client.increment(metric.name, metric.value, metric.sampleRate, metric.labels, (err) => {
+            if(err) {
+              reject(err)
+            } else {
+              resolve('Metric successfully sent')
+            }
+          });
+        }
+      } catch(err) {
+        reject(err)
+      }
+    })
+  };
+
+  const close = () => {
+    client.close()
+  }
+
+  client = new StatsD({
+    host: process.env.BLUEMATADOR_AGENT_HOST || 'localhost',
+    port: process.env.BLUEMATADOR_AGENT_PORT || 8767,
+    tagSeparator: '#',
+  });
+  return {
+    gauge,
+    count,
+    close
+  }
+}
+
 
 module.exports = {
-  init
+  init,
+  initWithPrefix
 }

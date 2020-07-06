@@ -15,18 +15,28 @@ const client = blueMatador.init();
 ```
 
 ### Init
-`init([host], [port])`
+`init([host], [port], [prefix])`
   * `host: (optional)` The `host` parameter specifies the host to send the custom metrics to. If no host is specified, `localhost` is the default host.
   * `port: (optional)` The `port` parameter specifies the port to send the custom metrics to. If no port is specified, `8767` is the default port. 
-
+  * `prefix: (optional)` The `prefix` parameter is a string that will be prepended to the name of every metric you send. The `host` parameter becomes required when a prefix is supplied.
 
 ```
 const blueMatador = require('blue-matador-metric-client');
-const client = blueMatador.init('127.0.0.1', 8767);
+const client = blueMatador.init('127.0.0.1', 8767, 'app');
 ```
 
-**Note:** The port parameter should be set to match the UDP port you have in your config file for the Blue Matador Agent.
+**Note:** The init function will detect if you have set `BLUEMATADOR_AGENT_HOST` and `BLUEMATADOR_AGENT_PORT` in the config file for your agent. If these variables have been set there is no need to manually set the host or port as they will be overridden.  
 
+If you are using the `BLUEMATADOR_AGENT_HOST` and `BLUEMATADOR_AGENT_PORT` variables to initialize the client but want to set a prefix for your metrics, you can use the `initWithPrefix()` function.
+
+### InitWithPrefix
+`initWithPrefix(prefix)`
+   * `prefix: (optional)` The `prefix` parameter is a string that will be prepended to the name of every metric you send.
+
+```
+const blueMatador = require('blue-matador-metric-client');
+const client = blueMatador.initWithPrefix('app');
+```
 
 Once you have an instance of the Blue Matador metric client in your code you can start sending custom metrics. 
 
@@ -46,7 +56,7 @@ If the Metric is successfully sent to the Blue Matador Agent the `.then()` respo
 const blueMatador = require('blue-matador-metric-client');
 const client = blueMatador.init();
 
-client.gauge('testMetric', 32.25, 1, { environment: 'Prod', account_id: 1232151 }).then(resp => {
+client.gauge('request.size', 32.25, 1, { environment: 'Prod', account_id: 1232151 }).then(resp => {
   console.log('Success!')
 }).catch(err => {
   console.log(err)
@@ -87,7 +97,7 @@ If the Metric is successfully sent to the Blue Matador Agent the `.then()` respo
 const blueMatador = require('blue-matador-metric-client');
 const client = blueMatador.init();
 
-client.count('testMetric', 1, 1, { environment: 'Prod', account_id: 1232151 }).then(resp => {
+client.count('homepage.clicks', 1, 1, { environment: 'Prod', account_id: 1232151 }).then(resp => {
   console.log('Success!')
 }).catch(err => {
   console.log(err)

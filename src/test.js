@@ -1,4 +1,4 @@
-const bluematador = require("./index").init("localhost", 8767, "app")
+const bluematador = require("./index").initWithPrefix("app")
 
 
 bluematador.count('testcount1');
