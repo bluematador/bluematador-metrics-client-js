@@ -27,11 +27,11 @@ const client = blueMatador.init('127.0.0.1', 8767, 'app');
 
 **Note:** The init function will detect if you have set `BLUEMATADOR_AGENT_HOST` and `BLUEMATADOR_AGENT_PORT` in the config file for your agent. If these variables have been set there is no need to manually set the host or port as they will be overridden.  
 
-If you are using the `BLUEMATADOR_AGENT_HOST` and `BLUEMATADOR_AGENT_PORT` variables to initialize the client but want to set a prefix for your metrics, you can use the `initWithPrefix()` function.
+If you are using the `BLUEMATADOR_AGENT_HOST` and `BLUEMATADOR_AGENT_PORT` variables to initialize the client and want to set a prefix for your metrics, you can use the `initWithPrefix()` function.
 
 ### InitWithPrefix
 `initWithPrefix(prefix)`
-   * `prefix: (optional)` The `prefix` parameter is a string that will be prepended to the name of every metric you send.
+   * `prefix:` The `prefix` parameter is a string that will be prepended to the name of every metric you send.
 
 ```
 const blueMatador = require('blue-matador-metric-client');
