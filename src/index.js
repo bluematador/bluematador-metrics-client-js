@@ -82,9 +82,12 @@ const formatLabels = labels => {
 
 const init = (host, port, prefix) => {
   let client = null
+  let clientHost = host
+  let clientPort = typeof port === 'number' ? port : null
+  let clientPrefix = typeof port === 'string' ? port : prefix
 
-  if(prefix && typeof prefix === 'string') {
-    metricPrefix = prefix
+  if(clientPrefix && typeof clientPrefix === 'string') {
+    metricPrefix = clientPrefix
   }
 
   const gauge = (name, value, sampleRate, labels) => {
@@ -124,17 +127,18 @@ const init = (host, port, prefix) => {
       }
     })
   };
+
   const close = () => {
     client.close()
   }
 
-  if(typeof host === 'number') {
+  if(typeof clientHost === 'number') {
     throw new Error('The host argument must be one of type string or falsy. Recieved type number');
-  } else if(typeof port !== 'number' && port) {
-    throw new Error('The port argument must be of type number. Received type ' + typeof port);
+  } else if(typeof clientPort !== 'number' && clientPort) {
+    throw new Error('The port argument must be of type number. Received type ' + typeof clientPort);
   } else {
-    let finalHost = host ? host : 'localhost';
-    let finalPort = port ? port : 8767;
+    let finalHost = clientHost ? clientHost : 'localhost';
+    let finalPort = clientPort ? clientPort : 8767;
     client = new StatsD({
       host: process.env.BLUEMATADOR_AGENT_HOST || finalHost,
       port: process.env.BLUEMATADOR_AGENT_PORT || finalPort,
