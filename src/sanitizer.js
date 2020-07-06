@@ -39,32 +39,19 @@ const checkTags = tags => {
   })
   return true
 }
-const sanitizeLabels = (formattedTags) => {
+function sanitizeLabels(formattedLabels) {
   let sanitizedLabels = [];
-  formattedTags.forEach(label => {
+  formattedLabels.forEach(label => {
       let finalLabel = label
-      if(finalLabel.includes("#")) {
-        console.log("found #")
+      if(finalLabel.includes("#") || finalLabel.includes("|")) {
         let newLabel = []
         for(i = 0; i < finalLabel.length; i++) {
-            if(finalLabel[i] === "#") {
+            if(finalLabel[i] === "#" || finalLabel[i] === "|") {
                 newLabel.push("_")
             } else {
               newLabel.push(finalLabel[i])
             }
 
-        }
-        finalLabel = newLabel.join("")
-      }
-      if(finalLabel.includes("|")) {
-        console.log("found |")
-        let newLabel = []
-        for(i = 0; i < finalLabel.length; i++) {
-            if(finalLabel[i] === "|") {
-                newLabel.push("_")
-            } else {
-              newLabel.push(finalLabel[i])
-            }
         }
         finalLabel = newLabel.join("")
       }
@@ -73,9 +60,38 @@ const sanitizeLabels = (formattedTags) => {
     return sanitizedLabels
 }
 
-
+sanitizeName = (name, prefix) => {
+  let finalName = name
+  let finalPrefix = prefix
+  if(finalName.includes("#") || finalName.includes("|")) {
+    let newName = []
+    for(i = 0; i < finalName.length; i++) {
+      if(finalName[i] === "#" || finalName[i] === "|") {
+        newName.push("_")
+      } else {
+        newName.push(finalName[i])
+      }
+    }
+    finalName = newName.join("")
+  }
+  if(finalPrefix && typeof finalPrefix === "string") {
+    if(finalPrefix.includes("#") || finalPrefix.includes("|")) {
+      let newPrefix = []
+      for(i = 0; i < finalPrefix.length; i++) {
+        if(finalPrefix[i] === "#" || finalPrefix[i] === "|") {
+          newPrefix.push("_")
+        } else {
+          newPrefix.push(finalPrefix[i])
+        }
+      }
+      finalPrefix = newPrefix.join("")
+    }
+  }
+  return finalPrefix ? finalPrefix + "." + finalName : finalName
+}
 
 module.exports = {
   sanitize,
-  sanitizeLabels
+  sanitizeLabels,
+  sanitizeName
 }
