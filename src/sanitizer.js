@@ -42,21 +42,15 @@ const checkTags = tags => {
 function sanitizeLabels(formattedLabels) {
   let sanitizedLabels = [];
   formattedLabels.forEach(label => {
-      if (label.includes("#") || label.includes("|")) {
-        label = label.replace(/\#|:/gi, "_").replace(/\||:/gi, "_")
-      }
+    label = label.replace(/#|\|/gi, "_")
       sanitizedLabels.push(label)
     })
     return sanitizedLabels
 }
 const sanitizeName = (name, prefix) => {
-  if (name.includes("#") || name.includes("|")) {
-    name = name.replace(/\#|:/gi, "_").replace(/\||:/gi, "_")
-  }
+  name = name.replace(/#|\|/gi, "_")
   if(prefix && typeof prefix === "string") {
-    if (prefix.includes("#") || prefix.includes("|")) {
-      prefix = prefix.replace(/\#|:/gi, "_").replace(/\||:/gi, "_")
-    }
+    prefix = prefix.replace(/#|\|/gi, "_")
   }
   return prefix ? prefix + "." + name : name
 }
