@@ -39,23 +39,23 @@ const checkTags = tags => {
   })
   return true
 }
-const sanitizeLabels = (formattedLabels) => {
+function sanitizeLabels(formattedLabels) {
   let sanitizedLabels = [];
   formattedLabels.forEach(label => {
-      while (label.includes("#") || label.includes("|")) {
-        label = label.replace("#", "_").replace("|", "_")
+      if (label.includes("#") || label.includes("|")) {
+        label = label.replace(/\#|:/gi, "_").replace(/\||:/gi, "_")
       }
       sanitizedLabels.push(label)
     })
     return sanitizedLabels
 }
 const sanitizeName = (name, prefix) => {
-  while (name.includes("#") || name.includes("|")) {
-    name = name.replace("#", "_").replace("|", "_")
+  if (name.includes("#") || name.includes("|")) {
+    name = name.replace(/\#|:/gi, "_").replace(/\||:/gi, "_")
   }
   if(prefix && typeof prefix === "string") {
-    while (prefix.includes("#") || prefix.includes("|")) {
-      prefix = prefix.replace("#", "_").replace("|", "_")
+    if (prefix.includes("#") || prefix.includes("|")) {
+      prefix = prefix.replace(/\#|:/gi, "_").replace(/\||:/gi, "_")
     }
   }
   return prefix ? prefix + "." + name : name
