@@ -1,4 +1,4 @@
-# Blue Matador Metric Client
+# Blue Matador Metrics Client
 
 **Send StatsD-style custom metrics to your Blue Matador dashboard** 
 
@@ -7,10 +7,10 @@
 
 ## Setup
 
-To start using the Blue Matador metric client, simply require the package and call the init method.
+To start using the Blue Matador metrics client, simply require the package and call the init method.
 
 ```
-const blueMatador = require('blue-matador-metric-client');
+const blueMatador = require('blue-matador-metrics-client');
 const client = blueMatador.init();
 ```
 
@@ -21,7 +21,7 @@ const client = blueMatador.init();
   * `prefix: (optional)` The `prefix` parameter is a string that will be prepended to the name of every metric you send. The `host` parameter becomes required when a prefix is supplied.
 
 ```
-const blueMatador = require('blue-matador-metric-client');
+const blueMatador = require('blue-matador-metrics-client');
 const client = blueMatador.init('127.0.0.1', 8767, 'app');
 ```
 
@@ -38,7 +38,7 @@ const blueMatador = require('blue-matador-metric-client');
 const client = blueMatador.initWithPrefix('app');
 ```
 
-Once you have an instance of the Blue Matador metric client in your code you can start sending custom metrics. 
+Once you have an instance of the Blue Matador metrics client in your code you can start sending custom metrics. 
 
 
 ### Gauge
@@ -50,10 +50,10 @@ Once you have an instance of the Blue Matador metric client in your code you can
 
 The `gauge` method is asynchronous and returns a Promise that can be chained on with `.then()` and `.catch()`
 
-If the Metric is successfully sent to the Blue Matador Agent the `.then()` response will always be `'Metric successfully sent'`
+If the metric is successfully sent to the Blue Matador Agent the `.then()` response will always be `'Metric successfully sent'`
 
 ```
-const blueMatador = require('blue-matador-metric-client');
+const blueMatador = require('blue-matador-metrics-client');
 const client = blueMatador.init();
 
 client.gauge('request.size', 32.25, 1, { environment: 'Prod', account_id: 1232151 }).then(resp => {
@@ -67,16 +67,16 @@ The following are all valid ways to send a gauge metric:
 
 ```
 # gauge 100
-Client.gauge("request.size", 100);
+client.gauge("request.size", 100);
 
 # gauge 100 but sample 50%
-Client.gauge("request.size", 100, 0.5);
+client.gauge("request.size", 100, 0.5);
 
 # gauge 100 with labels
-Client.gauge("request.size", 100, ["environment:Prod", "api"]);
+client.gauge("request.size", 100, ["environment:Prod", "api"]);
 
 # gauge 100, sample 50%, and send labels
-Client.gauge("request.size", 100, 0.5, ["environment:Prod", "api"]);
+client.gauge("request.size", 100, 0.5, ["environment:Prod", "api"]);
 
 ```
 
@@ -94,7 +94,7 @@ The `count` method is asynchronous and returns a Promise that can be chained on 
 If the Metric is successfully sent to the Blue Matador Agent the `.then()` response will always be `'Metric successfully sent'`
 
 ```
-const blueMatador = require('blue-matador-metric-client');
+const blueMatador = require('blue-matador-metrics-client');
 const client = blueMatador.init();
 
 client.count('homepage.clicks', 1, 1, { environment: 'Prod', account_id: 1232151 }).then(resp => {
@@ -108,19 +108,19 @@ The following are all valid ways to send a count metric:
 
 ```
 # count 1
-Client.count("homepage.clicks");
+client.count("homepage.clicks");
 
 # count 2
-Client.count("hompage.clicks", 2);
+client.count("hompage.clicks", 2);
 
 # count 1 but sample 50%
-Client.count("homepage.clicks", 1, 0.5);
+client.count("homepage.clicks", 1, 0.5);
 
 # count 2 and send labels
-Client.count("homepage.clicks", 2, ["environment:Prod", "homepage"]);
+client.count("homepage.clicks", 2, ["environment:Prod", "homepage"]);
 
 # count 2, sample 50%, and send labels
-Client.count("homepage.clicks", 2, 0.5, ["environment:Prod", "homepage"]);
+client.count("homepage.clicks", 2, 0.5, ["environment:Prod", "homepage"]);
 
 ```
 
