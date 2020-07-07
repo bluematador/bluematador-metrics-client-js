@@ -43,7 +43,7 @@ Once you have an instance of the Blue Matador metrics client in your code you ca
 
 ### Gauge
 `gauge(name, value, [sampleRate], [labels])`
-  * `Name: (required)` The metric name e.g. 'myapp.request.size'. Cannot contain '#' or '|'
+  * `Name: (required)` The metric name e.g. 'myapp.request.size'. Cannot contain ':' or '|'
   * `Value: (required)` The latest value to set for the metric
   * `sampleRate: (optional)` sends only a sample of data e.g. 0.5 indicates 50% of data being sent. Default value is 1
   * `labels: (optional)`  adds metadata to a metric. Can be specified as object or array of strings with key-value pairs formatted with a colon separator e.g. ['account:12345'] or {account: 12345}. Cannot contain '#' or '|'

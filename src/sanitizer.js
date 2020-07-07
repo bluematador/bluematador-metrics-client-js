@@ -48,7 +48,7 @@ function sanitizeLabels(formattedLabels) {
     return sanitizedLabels
 }
 const sanitizeName = (name, prefix) => {
-  name = name.replace(/#|\|/gi, "_")
+  name = name.replace(/:|\|/gi, "_")
   if(prefix && typeof prefix === "string") {
     prefix = prefix.replace(/#|\|/gi, "_")
   }
