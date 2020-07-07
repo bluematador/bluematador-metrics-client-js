@@ -8,8 +8,8 @@ const sanitize = metric => {
   return true
 }
 const checkName = name => {
-  if(name.includes('#')) {
-    throw new Error(`Illegal character # in metric name ${name}`)
+  if(name.includes(':')) {
+    throw new Error(`Illegal character : in metric name ${name}`)
   }
   if(name.includes('|')) {
     throw new Error(`Illegal character | in metric name ${name}`)
@@ -39,7 +39,24 @@ const checkTags = tags => {
   })
   return true
 }
+function sanitizeLabels(formattedLabels) {
+  let sanitizedLabels = [];
+  formattedLabels.forEach(label => {
+    label = label.replace(/#|\|/gi, "_")
+      sanitizedLabels.push(label)
+    })
+    return sanitizedLabels
+}
+const sanitizeName = (name, prefix) => {
+  name = name.replace(/#|\|/gi, "_")
+  if(prefix && typeof prefix === "string") {
+    prefix = prefix.replace(/#|\|/gi, "_")
+  }
+  return prefix ? prefix + "." + name : name
+}
 
 module.exports = {
-  sanitize
+  sanitize,
+  sanitizeLabels,
+  sanitizeName
 }
