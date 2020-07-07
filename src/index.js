@@ -1,8 +1,6 @@
 const StatsD = require('hot-shots');
 const { sanitize, sanitizeLabels, sanitizeName } = require('./sanitizer');
 
-let metricPrefix = null;
-
 const formatLabels = labels => {
   const formattedLabels = [];
   if (labels) {
@@ -29,7 +27,7 @@ const formatLabels = labels => {
   return sanitizeLabels(formattedLabels);
 };
 
-const createGaugeMetric = (name, value, sampleRate, labels) => {
+const createGaugeMetric = (prefix, name, value, sampleRate, labels) => {
   if (!name || typeof name !== 'string') {
     throw new Error('Metric name is missing or is an invalid type. Must be type string');
   }
@@ -37,7 +35,7 @@ const createGaugeMetric = (name, value, sampleRate, labels) => {
     throw new Error('Metric value is missing or is an invalid type. Must be type number');
   }
   const metric = {
-    name: sanitizeName(name, metricPrefix),
+    name: sanitizeName(name, prefix),
     value,
     sampleRate,
     labels
@@ -53,12 +51,12 @@ const createGaugeMetric = (name, value, sampleRate, labels) => {
   return metric;
 };
 
-const createCountMetric = (name, value, sampleRate, labels) => {
+const createCountMetric = (prefix, name, value, sampleRate, labels) => {
   if (!name || typeof name !== 'string') {
     throw new Error('Metric name is missing or is an invalid type. Must be type string');
   }
   const metric = {
-    name: sanitizeName(name, metricPrefix),
+    name: sanitizeName(name, prefix),
     value,
     sampleRate,
     labels
@@ -81,139 +79,91 @@ const createCountMetric = (name, value, sampleRate, labels) => {
 };
 
 const init = (host, port, prefix) => {
-  let client = null;
-  const clientHost = host;
-  const clientPort = typeof port === 'number' ? port : null;
-  const clientPrefix = typeof port === 'string' ? port : prefix;
-
-  if (clientPrefix && typeof clientPrefix === 'string') {
-    metricPrefix = clientPrefix;
+  // Prefer passed in host, then env variable, then default to localhost
+  const clientHost = host || process.env.BLUEMATADOR_AGENT_HOST || 'localhost';
+  if (typeof clientHost !== 'string') {
+    throw new Error('Host must be a string');
   }
 
-  const gauge = (name, value, sampleRate, labels) => {
-    return new Promise((resolve, reject) => {
-      try {
-        const metric = createGaugeMetric(name, value, sampleRate, labels);
-        if (sanitize(metric)) {
-          client.gauge(metric.name, metric.value, metric.sampleRate, metric.labels, (err) => {
-            if (err) {
-              reject(err);
-            } else {
-              resolve('Metric successfully sent');
-            }
-          });
-        }
-      } catch (err) {
-        reject(err);
-      }
-    });
-  };
-
-  const count = (name, value, sampleRate, labels, responseHandler) => {
-    return new Promise((resolve, reject) => {
-      try {
-        const metric = createCountMetric(name, value, sampleRate, labels, responseHandler);
-        if (sanitize(metric)) {
-          client.increment(metric.name, metric.value, metric.sampleRate, metric.labels, (err) => {
-            if (err) {
-              reject(err);
-            } else {
-              resolve('Metric successfully sent');
-            }
-          });
-        }
-      } catch (err) {
-        reject(err);
-      }
-    });
-  };
-
-  const close = () => {
-    client.close();
-  };
-
-  if (typeof clientHost === 'number') {
-    throw new Error('The host argument must be one of type string or falsy. Recieved type number');
-  } else if (typeof clientPort !== 'number' && clientPort) {
-    throw new Error('The port argument must be of type number. Received type ' + typeof clientPort);
-  } else {
-    const finalHost = clientHost ? clientHost : 'localhost';
-    const finalPort = clientPort ? clientPort : 8767;
-    client = new StatsD({
-      host: process.env.BLUEMATADOR_AGENT_HOST || finalHost,
-      port: process.env.BLUEMATADOR_AGENT_PORT || finalPort,
-      tagSeparator: '#',
-    });
-    return {
-      gauge,
-      count,
-      close
-    };
+  // Prefer passed in port, then env varible if it is a number, then default to 8767
+  let clientPort = port;
+  if (process.env.BLUEMATADOR_AGENT_PORT) {
+    const parsedPort = parseInt(process.env.BLUEMATADOR_AGENT_PORT, 10);
+    if (isNaN(parsedPort)) {
+      throw new Error('Port must be a number');
+    } else {
+      clientPort = clientPort || parsedPort;
+    }
   }
-};
+  clientPort = clientPort || 8767;
+  if (typeof clientPort !== 'number') {
+    throw new Error('Port must be a number');
+  }
 
-const initWithPrefix = (prefix) => {
-  let client = null;
-
+  // Sanitize the prefix
+  let metricPrefix = prefix;
   if (prefix && typeof prefix === 'string') {
-    metricPrefix = prefix;
+    metricPrefix = prefix.replace(/:|\|/gi, '_');
   }
 
-  const gauge = (name, value, sampleRate, labels) => {
-    return new Promise((resolve, reject) => {
-      try {
-        const metric = createGaugeMetric(name, value, sampleRate, labels);
-        if (sanitize(metric)) {
-          client.gauge(metric.name, metric.value, metric.sampleRate, metric.labels, (err) => {
-            if (err) {
-              reject(err);
-            } else {
-              resolve('Metric successfully sent');
-            }
-          });
-        }
-      } catch (err) {
-        reject(err);
-      }
-    });
-  };
-
-  const count = (name, value, sampleRate, labels, responseHandler) => {
-    return new Promise((resolve, reject) => {
-      try {
-        const metric = createCountMetric(name, value, sampleRate, labels, responseHandler);
-        if (sanitize(metric)) {
-          client.increment(metric.name, metric.value, metric.sampleRate, metric.labels, (err) => {
-            if (err) {
-              reject(err);
-            } else {
-              resolve('Metric successfully sent');
-            }
-          });
-        }
-      } catch (err) {
-        reject(err);
-      }
-    });
-  };
-
-  const close = () => {
-    client.close();
-  };
-
-  client = new StatsD({
-    host: process.env.BLUEMATADOR_AGENT_HOST || 'localhost',
-    port: process.env.BLUEMATADOR_AGENT_PORT || 8767,
+  const client = new StatsD({
+    host: clientHost,
+    port: clientPort,
     tagSeparator: '#',
   });
+
+  const gauge = (name, value, sampleRate, labels) => {
+    return new Promise((resolve, reject) => {
+      try {
+        const metric = createGaugeMetric(metricPrefix, name, value, sampleRate, labels);
+        if (sanitize(metric)) {
+          client.gauge(metric.name, metric.value, metric.sampleRate, metric.labels, (err) => {
+            if (err) {
+              reject(err);
+            } else {
+              resolve(metric);
+            }
+          });
+        }
+      } catch (err) {
+        reject(err);
+      }
+    });
+  };
+
+  const count = (name, value, sampleRate, labels, responseHandler) => {
+    return new Promise((resolve, reject) => {
+      try {
+        const metric = createCountMetric(metricPrefix, name, value, sampleRate, labels, responseHandler);
+        if (sanitize(metric)) {
+          client.increment(metric.name, metric.value, metric.sampleRate, metric.labels, (err) => {
+            if (err) {
+              reject(err);
+            } else {
+              resolve(metric);
+            }
+          });
+        }
+      } catch (err) {
+        reject(err);
+      }
+    });
+  };
+
+  const close = () => {
+    client.close();
+  };
+
   return {
     gauge,
     count,
-    close
+    close,
+    host: clientHost,
+    port: clientPort,
+    prefix: metricPrefix,
   };
 };
 
 module.exports = {
   init,
-  initWithPrefix
 };

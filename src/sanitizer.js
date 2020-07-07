@@ -40,11 +40,7 @@ function sanitizeLabels(formattedLabels) {
 }
 const sanitizeName = (name, prefix) => {
   const finalName = name.replace(/:|\|/gi, '_');
-  let finalPrefix;
-  if (prefix && typeof prefix === 'string') {
-    finalPrefix = prefix.replace(/:|\|/gi, '_');
-  }
-  return prefix ? finalPrefix + '.' + finalName : finalName;
+  return prefix ? prefix + '.' + finalName : finalName;
 };
 const sanitize = metric => {
   checkName(metric.name);

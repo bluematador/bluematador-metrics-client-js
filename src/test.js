@@ -1,6 +1,5 @@
 const bluematador = require('./index').initWithPrefix('app');
 
-
 bluematador.count('testcount1');
 
 bluematador.count('testcount2', 2);
@@ -10,7 +9,6 @@ bluematador.count('testcount3', 2, 1);
 bluematador.count('testcount4', { environment: '#Prod', account_id: 1232151 });
 
 bluematador.count('testcount5', 2, { environment: 'Prod', account_id: 1232151 });
-
 
 bluematador.gauge('testGauge1', 23.2323);
 
