@@ -1,12 +1,3 @@
-const sanitize = metric => {
-  checkName(metric.name);
-  checkValue(metric.value);
-  checkSampleRate(metric.sampleRate);
-  if (Array.isArray(metric.tags) && metric.tags.length) {
-    checkTags(metric.tags);
-  }
-  return true;
-};
 const checkName = name => {
   if (name.includes(':')) {
     throw new Error(`Illegal character : in metric name ${name}`);
@@ -54,6 +45,15 @@ const sanitizeName = (name, prefix) => {
     finalPrefix = prefix.replace(/:|\|/gi, '_');
   }
   return prefix ? finalPrefix + '.' + finalName : finalName;
+};
+const sanitize = metric => {
+  checkName(metric.name);
+  checkValue(metric.value);
+  checkSampleRate(metric.sampleRate);
+  if (Array.isArray(metric.tags) && metric.tags.length) {
+    checkTags(metric.tags);
+  }
+  return true;
 };
 
 module.exports = {
