@@ -39,55 +39,26 @@ const checkTags = tags => {
   })
   return true
 }
-function sanitizeLabels(formattedLabels) {
+const sanitizeLabels = (formattedLabels) => {
   let sanitizedLabels = [];
   formattedLabels.forEach(label => {
-      let finalLabel = label
-      if(finalLabel.includes("#") || finalLabel.includes("|")) {
-        let newLabel = []
-        for(i = 0; i < finalLabel.length; i++) {
-            if(finalLabel[i] === "#" || finalLabel[i] === "|") {
-                newLabel.push("_")
-            } else {
-              newLabel.push(finalLabel[i])
-            }
-
-        }
-        finalLabel = newLabel.join("")
+      while (label.includes("#") || label.includes("|")) {
+        label = label.replace("#", "_").replace("|", "_")
       }
-      sanitizedLabels.push(finalLabel)
+      sanitizedLabels.push(label)
     })
     return sanitizedLabels
 }
-
-sanitizeName = (name, prefix) => {
-  let finalName = name
-  let finalPrefix = prefix
-  if(finalName.includes("#") || finalName.includes("|")) {
-    let newName = []
-    for(i = 0; i < finalName.length; i++) {
-      if(finalName[i] === "#" || finalName[i] === "|") {
-        newName.push("_")
-      } else {
-        newName.push(finalName[i])
-      }
-    }
-    finalName = newName.join("")
+const sanitizeName = (name, prefix) => {
+  while (name.includes("#") || name.includes("|")) {
+    name = name.replace("#", "_").replace("|", "_")
   }
-  if(finalPrefix && typeof finalPrefix === "string") {
-    if(finalPrefix.includes("#") || finalPrefix.includes("|")) {
-      let newPrefix = []
-      for(i = 0; i < finalPrefix.length; i++) {
-        if(finalPrefix[i] === "#" || finalPrefix[i] === "|") {
-          newPrefix.push("_")
-        } else {
-          newPrefix.push(finalPrefix[i])
-        }
-      }
-      finalPrefix = newPrefix.join("")
+  if(prefix && typeof prefix === "string") {
+    while (prefix.includes("#") || prefix.includes("|")) {
+      prefix = prefix.replace("#", "_").replace("|", "_")
     }
   }
-  return finalPrefix ? finalPrefix + "." + finalName : finalName
+  return prefix ? prefix + "." + name : name
 }
 
 module.exports = {
