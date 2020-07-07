@@ -1,9 +1,9 @@
-const bluematador = require("./index").initWithPrefix("app")
+const bluematador = require('./index').initWithPrefix('app');
 
 
 bluematador.count('testcount1');
 
-bluematador.count('testcount2', 2)
+bluematador.count('testcount2', 2);
 
 bluematador.count('testcount3', 2, 1);
 
