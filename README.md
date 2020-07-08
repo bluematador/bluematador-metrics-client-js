@@ -15,10 +15,10 @@ const client = blueMatador.init();
 ```
 
 ### Init
-`init([host], [port], [prefix])`
-  * `host: (optional)` The `host` parameter specifies the host to send the custom metrics to. If no host is specified, `localhost` is the default host.
-  * `port: (optional)` The `port` parameter specifies the port to send the custom metrics to. If no port is specified, `8767` is the default port. 
-  * `prefix: (optional)` The `prefix` parameter is a string that will be prepended to the name of every metric you send. The `host` parameter becomes required when a prefix is supplied. Cannot contain ':' or '|'
+`init([options])`
+  * `options.host: (optional)` The `host` parameter specifies the host to send the custom metrics to. If no host is specified, `localhost` is the default host.
+  * `options.port: (optional)` The `port` parameter specifies the port to send the custom metrics to. If no port is specified, `8767` is the default port. 
+  * `options.prefix: (optional)` The `prefix` parameter is a string that will be prepended to the name of every metric you send. The `host` parameter becomes required when a prefix is supplied. Cannot contain ':' or '|'
 
 ```
 const blueMatador = require('blue-matador-metrics-client');

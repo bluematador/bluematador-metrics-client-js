@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { init } from '../src/options';
+import { init } from '../src';
 
 describe('count', () => {
   it('should sanitize invalid names', done => {
