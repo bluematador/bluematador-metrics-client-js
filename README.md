@@ -16,7 +16,8 @@ const client = blueMatador.init();
 
 ### Init
 `init([options])`
-  `options` is an object with the following keys:
+
+`options` is an object with the following keys:
   * `host: (optional)` specifies the host to send the custom metrics to. If no host is specified, `localhost` is the default host.
   * `port: (optional)` specifies the port to send the custom metrics to. If no port is specified, `8767` is the default port. 
   * `prefix: (optional)` a string that will be prepended to the name of every metric you send. Cannot contain ':' or '|'
@@ -33,13 +34,14 @@ const client = blueMatador.init(options);
 
 **Note:** The init function will detect if you have set `BLUEMATADOR_AGENT_HOST` and `BLUEMATADOR_AGENT_PORT` in the config file for your agent. Manually setting the `host` or `port` through the options object will override environmental variables.   
 
-Once you have an instance of the Blue Matador metrics client in your code you can start sending custom metrics. 
+Once you have an instance of the Blue Matador metrics client in your code you can start sending custom metrics. A Blue Matador agent must be configured to receive metrics at the destination host and port.
 
 ### Gauge
 `gauge(name, value, [options])`
-  * `Name: (required)` The metric name e.g. 'myapp.request.size'. Cannot contain ':' or '|'
-  * `Value: (required)` The latest value to set for the metric
-  `options` is an object with the following keys: 
+  * `name: (required)` The metric name e.g. 'myapp.request.size'. Cannot contain ':' or '|'
+  * `value: (required)` The latest value to set for the metric
+  
+`options` is an object with the following keys: 
   * `sampleRate: (optional)` sends only a sample of data e.g. 0.5 indicates 50% of data being sent. Default value is 1
   * `labels: (optional)`  adds metadata to a metric. Can be specified as object or array of strings with key-value pairs formatted with a colon separator e.g. ['account:12345'] or {account: 12345}. Cannot contain '#' or '|'
 
@@ -78,9 +80,10 @@ client.gauge("request.size", 100, { sampleRate: 0.5, labels: ["environment:Prod"
 
 ### Count
 `count(name, options)`
-  * `Name: (required)` The metric name e.g. 'myapp.request.size'. Cannot contain ':' or '|'
-  `options` is an object with the following keys: 
-  * `Value: (optional)` the amount to increment the metric by, the default is 1. 
+  * `name: (required)` The metric name e.g. 'myapp.request.size'. Cannot contain ':' or '|'
+  
+`options` is an object with the following keys: 
+  * `value: (optional)` the amount to increment the metric by, the default is 1. 
   * `sampleRate: (optional)` sends only a sample of data e.g. 0.5 indicates 50% of data being sent. Default value is 1
   * `labels: (optional)`  adds metadata to a metric. Can be specified as object or array of strings with key-value pairs formatted with a colon separator e.g. ['account:12345'] or {account: 12345}. Cannot contain '#' or '|'
 
