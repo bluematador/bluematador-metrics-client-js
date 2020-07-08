@@ -16,30 +16,18 @@ const client = blueMatador.init();
 
 ### Init
 `init([options])`
-  * `options.host: (optional)` The `host` parameter specifies the host to send the custom metrics to. If no host is specified, `localhost` is the default host.
-  * `options.port: (optional)` The `port` parameter specifies the port to send the custom metrics to. If no port is specified, `8767` is the default port. 
-  * `options.prefix: (optional)` The `prefix` parameter is a string that will be prepended to the name of every metric you send. The `host` parameter becomes required when a prefix is supplied. Cannot contain ':' or '|'
+  * `options.host: (optional)` The `host` key specifies the host to send the custom metrics to. If no host is specified, `localhost` is the default host.
+  * `options.port: (optional)` The `port` key specifies the port to send the custom metrics to. If no port is specified, `8767` is the default port. 
+  * `options.prefix: (optional)` The `prefix` key is a string that will be prepended to the name of every metric you send. Cannot contain ':' or '|'
 
 ```
 const blueMatador = require('blue-matador-metrics-client');
 const client = blueMatador.init('127.0.0.1', 8767, 'app');
 ```
 
-**Note:** The init function will detect if you have set `BLUEMATADOR_AGENT_HOST` and `BLUEMATADOR_AGENT_PORT` in the config file for your agent. If these variables have been set there is no need to manually set the host or port as they will be overridden.  
-
-If you are using the `BLUEMATADOR_AGENT_HOST` and `BLUEMATADOR_AGENT_PORT` variables to initialize the client and want to set a prefix for your metrics, you can use the `initWithPrefix()` function.
-
-### InitWithPrefix
-`initWithPrefix(prefix)`
-   * `prefix:` The `prefix` parameter is a string that will be prepended to the name of every metric you send. Cannot contain ':' or '|'
-
-```
-const blueMatador = require('blue-matador-metric-client');
-const client = blueMatador.initWithPrefix('app');
-```
+**Note:** The init function will detect if you have set `BLUEMATADOR_AGENT_HOST` and `BLUEMATADOR_AGENT_PORT` in the config file for your agent.  
 
 Once you have an instance of the Blue Matador metrics client in your code you can start sending custom metrics. 
-
 
 ### Gauge
 `gauge(name, value, [sampleRate], [labels])`
