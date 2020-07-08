@@ -39,7 +39,7 @@ const createGaugeMetric = (prefix, name, value, sampleRate, labels) => {
     value,
     sampleRate,
     labels: formatLabels(labels)
-  }
+  };
 };
 
 const createCountMetric = (prefix, name, value, sampleRate, labels) => {
@@ -55,7 +55,7 @@ const createCountMetric = (prefix, name, value, sampleRate, labels) => {
 };
 
 const init = (options) => {
-  const initOptions = options || {}
+  const initOptions = options || {};
   // Prefer passed in host, then env variable, then default to localhost
   const clientHost = initOptions.host || process.env.BLUEMATADOR_AGENT_HOST || 'localhost';
   if (typeof clientHost !== 'string') {
@@ -90,7 +90,7 @@ const init = (options) => {
   });
 
   const gauge = (name, value, options) => {
-    const metricOptions = options || {}
+    const metricOptions = options || {};
     return new Promise((resolve, reject) => {
       try {
         const metric = createGaugeMetric(metricPrefix, name, value, metricOptions.sampleRate || 1, metricOptions.labels);
@@ -110,7 +110,7 @@ const init = (options) => {
   };
 
   const count = (name, options) => {
-    const metricOptions = options || {}
+    const metricOptions = options || {};
     return new Promise((resolve, reject) => {
       try {
         const metric = createCountMetric(metricPrefix, name, metricOptions.value || 1, metricOptions.sampleRate || 1, metricOptions.labels);
