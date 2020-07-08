@@ -111,7 +111,6 @@ const init = (options) => {
 
   const count = (name, options) => {
     const metricOptions = options || {}
-    console.log(metricOptions)
     return new Promise((resolve, reject) => {
       try {
         const metric = createCountMetric(metricPrefix, name, metricOptions.value || 1, metricOptions.sampleRate || 1, metricOptions.labels || "");
