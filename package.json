@@ -1,6 +1,6 @@
 {
   "name": "blue-matador-metrics-client",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Send StatsD-style custom metrics to your Blue Matador account.",
   "main": "./lib/index.js",
   "scripts": {

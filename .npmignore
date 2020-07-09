@@ -9,6 +9,7 @@ package-lock.json
 yarn.lock
 
 # project files
+src
 test
 examples
 .travis.yml
