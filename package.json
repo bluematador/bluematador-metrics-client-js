@@ -4,12 +4,11 @@
   "description": "Send StatsD-style custom metrics to your Blue Matador account.",
   "main": "./lib/index.js",
   "scripts": {
-    "clean": "rimraf lib",
     "test": "mocha --require babel-core/register --require babel-polyfill --recursive",
     "lint": "eslint src/*.js test/*.js",
     "lint:fix": "eslint --fix src/*.js test/*.js",
     "build": "cross-env BABEL_ENV=production babel src --out-dir lib",
-    "prepare": "npm run clean && npm run lint && npm run test && npm run build"
+    "prepare": "npm run lint && npm run test && npm run build"
   },
   "files": [
     "lib",
