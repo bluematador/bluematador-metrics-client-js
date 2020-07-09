@@ -1,11 +1,19 @@
 language: node_js
 node_js:
-  - '14'
-  - '12'
-  - '10'
+- '14'
+- '12'
+- '10'
 script:
-  - npm run test
-  - npm run build
+- npm run test
+- npm run build
 branches:
   only:
-    - master
+  - master
+deploy:
+  provider: npm
+  on:
+    tags: true
+  api_key:
+    secure: yYMTzmq17KcKOkYqBK3u0n91/Bh//CipcLqy8WzbeFiCyPmtkSciQYYgA2itLevWbY0bfggFhZnz1Gkc8u9fWurTn6w9Dg4/XNhAEFzO1Vo591KG7a08zr0H2m8ZxFLXTzVfnQoc9smaOSe7bSMyeYIOFwDraVl61YnOb7Kdt2z4ZOdDqOgyXtEBjpQoS53of9HMlIrzIbTUMgSaaDU+tcoqswcYqpIjDRAh6Xj/fBhr1fCbs7fCB9W6tyh2kLQs6p9rMzbGyyYAPZJB0ixYBgtULfLGTskg3EXtKjplbBFWaJie9hVUO/2H9goyE2e7YGkS9V2aaXI/Qbyqdk2bstYBeRvBKJGPRa+6/NEktyIPiQMfLrSjiQ+YcnqLlTt439bFUcCjjE+HUtJTPj3Keb+DiJu0lmiXgFCxEfsV6w4KvVkiyNZfqUGp431RxVqcoAPpFsPqiCIVFha3kgRJavfrYJsp7AXtV6w8z3HAG58zzkeUcxi0pXcGiBXSPIR/j0C1QoWUtDXAFdYN4UvNnv+2PtmmI1R10XfBwRI1l/HM291KYF44M4xmoNlJEV6k67LwxMRFu5Y2KVZZuAd+Va7JQxZx8MK/t/HQF9b4/H8UI7GBDQbkvN2enikQPudaKZdywJjozPpXxsBAt0+BY+vsvWJzWactKpm+/swIhW0=
+  email:
+    secure: T0cKH0DXVl7kZMmS4/Z8InU2NKn7wcAxnaydbXXEaM0tP5IUDmIkx33p5OI+2NT46HQdcjBhlllIzAEagjWNItBCv+2lctGje3HtF15FNSpd3XVoSnR8eM1s5z2K++hl95gyCI4mbcDE1LvUMvejj1azWRR+jR5eJ23u7kG2U6SYdZqM1wo3AcJbhh1XwP/iwUA91xViRxOvYJOhxU7En2UQYU/YBhAEW2mvEhC6HjG4gwUFB33bbp+2/2TXNfcdpalm/cIIOWcguscKkgJVSrsxB762gQtT+c+CZoS8k0cRk3PZwgLaYz9RKzO8zaD06VJgBFyhdUdEHzo8T5TvCVkO10c+yhMvG60zIJhaoaoRy0MI8XBPMIunU9Lb1VLY6d7jrWDxqzdVWcSk6bbI3qruhi6CA38vr1JRo53Mzb6bGrhVEypbnZHd2o7UEs/uhbJIAYw50f9p6T6EuWWBtPXSSos18mEt7iUS0ixuCjPmwMepBIExKyfKJpbpuE2wCvK8hM/m+YZ9gbAP/zmgTXWmoeX+hkSvi5onjPJckRsD3kJg71tuy9vsmcrhhQniqgNYzJjfRpC9YxK3mhaq7XLMLIHQA8KOFI4o+SyVukLNqkuc4PrBIRdMCH79D82OX5fTfwoGBQr+veifNIMuRUbDmtlK0sYysHHYi3UxzoI=
