@@ -4,12 +4,11 @@ node_js:
 script:
 - npm run test
 - npm run build
-before_deploy:
-- npm install --only=dev
 deploy:
   provider: npm
   on:
     tags: true
+  skip_cleanup: true
   api_key:
     secure: yYMTzmq17KcKOkYqBK3u0n91/Bh//CipcLqy8WzbeFiCyPmtkSciQYYgA2itLevWbY0bfggFhZnz1Gkc8u9fWurTn6w9Dg4/XNhAEFzO1Vo591KG7a08zr0H2m8ZxFLXTzVfnQoc9smaOSe7bSMyeYIOFwDraVl61YnOb7Kdt2z4ZOdDqOgyXtEBjpQoS53of9HMlIrzIbTUMgSaaDU+tcoqswcYqpIjDRAh6Xj/fBhr1fCbs7fCB9W6tyh2kLQs6p9rMzbGyyYAPZJB0ixYBgtULfLGTskg3EXtKjplbBFWaJie9hVUO/2H9goyE2e7YGkS9V2aaXI/Qbyqdk2bstYBeRvBKJGPRa+6/NEktyIPiQMfLrSjiQ+YcnqLlTt439bFUcCjjE+HUtJTPj3Keb+DiJu0lmiXgFCxEfsV6w4KvVkiyNZfqUGp431RxVqcoAPpFsPqiCIVFha3kgRJavfrYJsp7AXtV6w8z3HAG58zzkeUcxi0pXcGiBXSPIR/j0C1QoWUtDXAFdYN4UvNnv+2PtmmI1R10XfBwRI1l/HM291KYF44M4xmoNlJEV6k67LwxMRFu5Y2KVZZuAd+Va7JQxZx8MK/t/HQF9b4/H8UI7GBDQbkvN2enikQPudaKZdywJjozPpXxsBAt0+BY+vsvWJzWactKpm+/swIhW0=
   email:
