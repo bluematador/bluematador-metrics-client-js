@@ -32,7 +32,7 @@ const options = {
 const client = blueMatador.init(options);
 ```
 
-**Note:** The init function will detect if you have set `BLUEMATADOR_AGENT_HOST` and `BLUEMATADOR_AGENT_PORT` in the config file for your agent. Manually setting the `host` or `port` through the options object will override environmental variables.   
+**Note:** The init function will detect if you have set `BLUEMATADOR_AGENT_HOST` and `BLUEMATADOR_AGENT_PORT` as env variables. Manually setting the `host` or `port` through the options object will override environmental variables.   
 
 Once you have an instance of the Blue Matador metrics client in your code you can start sending custom metrics. A Blue Matador agent must be configured to receive metrics at the destination host and port.
 
